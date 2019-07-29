@@ -1,0 +1,217 @@
+package org;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.parser.Parser;
+import org.jsoup.select.Elements;
+
+import com.taskadapter.redmineapi.RedmineException;
+import com.taskadapter.redmineapi.RedmineManager;
+import com.taskadapter.redmineapi.bean.Membership;
+import com.taskadapter.redmineapi.bean.User;
+
+public class AppMain {
+
+    String name;
+    int age;
+
+    private int abcaa(int age) {
+        int a;
+        int b;
+        return age++;
+    }
+
+    public static void main(String[] args) {
+        // SonarClient sonarClient =
+        // SonarClient.builder().url("http://localhost:9000").login("admin").password("admin").build();
+        // IssueQuery query = IssueQuery.create();
+        // // Chọn project
+        // // query.componentRoots("Hi");
+        // // query.severities("CRITICAL", "MAJOR", "MINOR");
+        // query.resolved(false);
+        // // Lấy ra issue mới
+        // // query.urlParams().put("sinceLeakPeriod", true);
+        // IssueClient issueClient = sonarClient.issueClient();
+        // Issues issues = issueClient.find(query);
+        // List<Issue> issueList = issues.list();
+        // for (Issue issue : issueList) {
+        // System.out.println(issue.attribute("kee") + " " + issue.author() + "
+        // " + issue.componentKey() + " " + issue.line() + " " + issue.ruleKey()
+        // + " "
+        // + issue.severity() + " " + issue.message());
+        // }
+        // try {
+        // BufferedWriter writer = new BufferedWriter(new
+        // FileWriter("D:\\test.txt", true));
+        // for (Issue issue : issueList) {
+        // writer.write(issue.message());
+        // writer.write(System.getProperty("line.separator"));
+        // }
+        // writer.close();
+        // } catch (IOException e) {
+        // LOGGER.info(e.getMessage());
+        // }
+
+        RedmineManager redmineManager = new RedmineManager("http://192.168.0.136/redmine/", "20f048be9ce2fea6d3040b4cd6b1d9af078a2f75");
+        // try {
+        // for (Project project : redmineManager.getProjects()) {
+        // System.out.println(project.getId() + "---" + project.getName());
+        // }
+        // User user = new User();
+        // user.setMail("vuvankien@luvina.net");
+        // for (Membership membership :
+        // redmineManager.getMemberships("112")) {
+        // if (membership.getUser() != null) {
+        // System.out.println(membership.getUser().getMail());
+        // User user =
+        // redmineManager.getUserById(membership.getUser().getId());
+        // // redmineManager.getUserById(userId)
+        // System.out.println(user.getMail());
+        // }
+        // }
+        // Map<String, User> users = new HashMap<String, User>();
+        // User assigned = null;
+        // try {
+        // for (Membership membership : redmineManager.getMemberships("112")) {
+        // User user = membership.getUser();
+        // if (user != null) {
+        // users.put(redmineManager.getUserById(user.getId()).getMail(), user);
+        // }
+        // }
+        // String mail = "vuvankien@luvina.net";
+        // if (users.keySet().contains(mail)) {
+        // assigned = users.get(mail);
+        // } else {
+        // assigned = redmineManager.getCurrentUser();
+        // }
+        // System.out.println(assigned.getFullName());
+        // } catch (RedmineException e) {
+        // e.printStackTrace();
+        // }
+        // } catch (RedmineException e) {
+        // // TODO Auto-generated catch block
+        // e.printStackTrace();
+        // }
+        // try {
+        // Issue issueParent = redmineManager.getIssueById(9034516,
+        // INCLUDE.journals);
+        // for (CustomField customField : issueParent.getCustomFields()) {
+        // System.out.println(customField);
+        // }
+        // Issue issue = new Issue();
+        // Tracker tracker = new Tracker();
+        // tracker.setName("Task");
+        // issue.setTracker(tracker);
+        // issue.setParentId(9034516);
+        // issue.setSubject("Test");
+        // issue.setDueDate(new Date());
+        // issue.setDescription("This is description");
+        // User user = new User();
+        // user.setId(110);
+        // issue.setAssignee(user);
+        // List<CustomField> customFields = new ArrayList<CustomField>();
+        // CustomField customField1 = new CustomField(113, "Độ ưu tiên gốc", "4
+        // : Trung bình");
+        // CustomField customField2 = new CustomField(8, "C1S #", "Bug");
+        // CustomField customField3 = new CustomField(93, "Kỳ vọng release của
+        // C1S", "2019-07-25");
+        // CustomField customField4 = new CustomField(130, "Team", "Team Kỹ
+        // Thuật");
+        // customFields.addAll(Collections.unmodifiableList(Arrays.asList(customField1,
+        // customField2, customField3, customField4)));
+        // issue.setCustomFields(customFields);
+        // issue.setStartDate(new Date());
+        // redmineManager.createIssue(issueParent.getProject().getId() + "",
+        // issue);
+        // } catch (RedmineException e) {
+        // // TODO Auto-generated catch block
+        // e.printStackTrace();
+        // }
+        // try {
+        // List<Issue> issues = redmineManager.getIssues("37", null,
+        // INCLUDE.relations);
+        // for (Project project : redmineManager.getProjects()) {
+        // System.out.println(project.getId() + "---" + project.getName());
+        // }
+        // System.out.println(redmineManager.getIssueById(9034516,
+        // INCLUDE.journals).getSubject());
+        // System.out.println("----");
+        // for (Issue issue : issues) {
+        // System.out.println(issue.getId());
+        // System.out.println(issue.getProject().getId());
+        // }
+        // } catch (RedmineException e1) {
+        // // TODO Auto-generated catch block
+        // e1.printStackTrace();
+        // }
+        //
+        Document document;
+        ResultSeparation result = null;
+        try {
+            document = Jsoup.parse(new FileInputStream(new File("C:\\Program Files (x86)\\Jenkins\\jobs\\Simple\\lastSuccessful\\changelog.xml")), "UTF-8", "",
+                    Parser.xmlParser());
+            // Elements elements = document.select("msg");
+            // if (!elements.isEmpty()) {
+            // for (Element element : elements) {
+            // String message = element.text();
+            // if (message.toLowerCase().startsWith("Ticket".toLowerCase())) {
+            // message = "Ticket #11111 Redmine #113322";
+            //// String contents = message.substring(0, message.indexOf('-') -
+            // 1);
+            // String[] tokens = message.replace("#", " ").split("\\s+");
+            // result = new ResultSeparation();
+            // result.setTicket(tokens[1]);
+            // result.setRedmine(tokens[3]);
+            // System.out.println(result.getRedmine());
+            // System.out.println(result.getTicket());
+            // System.out.println(document.selectFirst("author").text());
+            // }
+            // }
+            // }
+            BufferedReader bufferedReader = new BufferedReader(
+                    new FileReader(new File("C:\\Program Files (x86)\\Jenkins\\jobs\\Simple\\lastSuccessful\\changelog.xml")));
+            String line;
+            int index = 0;
+            while ((line = bufferedReader.readLine()) != null) {
+                if (index == 6 || index == 4) {
+                    if (index == 4) {
+                        System.out.println(line.substring(line.indexOf('<')+1, line.lastIndexOf('>')));
+                    }else{
+                        System.out.println(line.trim());
+                    }
+                }
+                index++;
+            }
+        } catch (
+
+        FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void kd1$kd(int k, int d) {
+        System.out.println("kd");
+    }
+
+    private void kd1$(int k, int d) {
+        System.out.println("kd");
+    }
+
+    private void kd1D() {
+        abcaa(age);
+        age++;
+    }
+
+}
